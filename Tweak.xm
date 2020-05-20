@@ -62,7 +62,7 @@ void _GameMode_tick(uintptr_t* self) {
 	
 	if(cnt == 100) {
 		// If this prints 4 then we're in the clear
-		std::string myStr = std::string(Block$mBlocks[4]->blockId);
+		std::string myStr = std::to_string(Block$mBlocks[4]->blockId);
 		GuiData_displayClientMessage(guiData, myStr);
 	}
 }

@@ -54,7 +54,7 @@ void _GameMode_tick(uintptr_t* self) {
 	cnt++;
 
 	if(cnt == 100)
-	GuiData_displayClientMessage(guiData, "Thank you so much for introducing MCPETestMod!\nThis mod only works on jailbroken iOS.\n§bMyTwitterAccount:@darkshuper_ch\n\n§ePlease subscribe to my channel!");
+	GuiData_displayClientMessage(guiData, "Thank you so much for introducing MCPETestMod!\nThis mod only works on jailbroken iOS.");
 }
 
 static std::string (*I18n_get)(const std::string&);

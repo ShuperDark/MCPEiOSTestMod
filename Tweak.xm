@@ -26,12 +26,20 @@
 #include <ifaddrs.h>
 #include <stdint.h>
 
+struct Block
+{
+	void** vtable;
+	int blockId;
+};
+static Block** Block$mBlocks;
+
 uintptr_t* guiData = NULL;
 
 int cnt = 0;
 
 void (*GuiData_displayClientMessage)(uintptr_t*, const std::string&);
 void _GuiData_displayClientMessage(const std::string&);
+
 
 void (*GuiData_tick)(uintptr_t*);
 void _GuiData_tick(uintptr_t* _guiData) {
@@ -48,13 +56,15 @@ void _GuiData_displayClientMessage(const std::string& msg) {
 
 void (*GameMode_tick)(uintptr_t* self);
 void _GameMode_tick(uintptr_t* self) {
-
 	GameMode_tick(self);
-
+	
 	cnt++;
-
-	if(cnt == 100)
-	GuiData_displayClientMessage(guiData, "Thank you so much for introducing MCPETestMod!\nThis mod only works on jailbroken iOS.");
+	
+	if(cnt == 100) {
+		// If this prints 4 then we're in the clear
+		std::string myStr = std::string(Block$mBlocks[4]->blockId);
+		GuiData_displayClientMessage(guiData, myStr);
+	}
 }
 
 static std::string (*I18n_get)(const std::string&);
@@ -74,4 +84,6 @@ static std::string _I18n_get(const std::string& key) {
 	MSHookFunction((void*)(0x100108794 + _dyld_get_image_vmaddr_slide(0)), (void*)&_GuiData_displayClientMessage, (void**)&GuiData_displayClientMessage);
 	MSHookFunction((void*)(0x10049816c + _dyld_get_image_vmaddr_slide(0)), (void*)&_I18n_get, (void**)&I18n_get);
 	MSHookFunction((void*)(0x10072192c + _dyld_get_image_vmaddr_slide(0)), (void*)&_GameMode_tick, (void**)&GameMode_tick);
+	
+	Block$mBlocks = (Block**)(0x1012d2060 + _dyld_get_image_vmaddr_slide(0));
 }
